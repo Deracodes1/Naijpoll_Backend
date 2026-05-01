@@ -1,19 +1,23 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { VersioningType } from '@nestjs/common';
-
+import { AllExceptionsFilter } from './global/http-exception.filter';
+import { TransformInterceptor } from './global/transform.interceptor';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
+
   if (process.env.NODE_ENV === 'production') {
     app.enableShutdownHooks();
   }
+  app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalInterceptors(new TransformInterceptor());
 
-  // this will enable global versioning in our nest js application.
+  app.setGlobalPrefix('api');
   app.enableVersioning({
     type: VersioningType.URI,
     defaultVersion: '1',
   });
+  await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap().catch((err) => {
   console.error('Error during bootstrap:', err);
