@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { VersioningType, ConsoleLogger } from '@nestjs/common';
 import { AllExceptionsFilter } from './global/http-exception.filter';
 import { TransformInterceptor } from './global/transform.interceptor';
+import helmet from 'helmet';
 async function bootstrap() {
   // this will toggle JSON based logging depending on whether the app is running on production or not
   const isProduction = process.env.NODE_ENV === 'production';
@@ -15,6 +16,8 @@ async function bootstrap() {
   if (isProduction) {
     app.enableShutdownHooks();
   }
+
+  app.use(helmet);
   app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalInterceptors(new TransformInterceptor());
 
