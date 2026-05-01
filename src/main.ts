@@ -1,12 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { VersioningType } from '@nestjs/common';
+import { VersioningType, ConsoleLogger } from '@nestjs/common';
 import { AllExceptionsFilter } from './global/http-exception.filter';
 import { TransformInterceptor } from './global/transform.interceptor';
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  // this will toggle JSON based logging depending on whether the app is running on production or not
+  const isProduction = process.env.NODE_ENV === 'production';
+  const app = await NestFactory.create(AppModule, {
+    logger: isProduction
+      ? new ConsoleLogger({ json: true })
+      : ['debug', 'error', 'fatal', 'log', 'verbose', 'warn'],
+  });
 
-  if (process.env.NODE_ENV === 'production') {
+  if (isProduction) {
     app.enableShutdownHooks();
   }
   app.useGlobalFilters(new AllExceptionsFilter());
