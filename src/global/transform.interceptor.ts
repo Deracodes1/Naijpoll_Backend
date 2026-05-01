@@ -26,7 +26,6 @@ export class TransformInterceptor<T> implements NestInterceptor<
     next: CallHandler<T>,
   ): Observable<TransformedResponse<T>> {
     const response = context.switchToHttp().getResponse<Response>();
-    console.log('intercpetor is aktive');
     return next.handle().pipe(
       map((data: T) => ({
         success: true,
