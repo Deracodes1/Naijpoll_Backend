@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { VersioningType, ConsoleLogger, ValidationPipe } from '@nestjs/common';
-import { AllExceptionsFilter } from './global/http-exception.filter';
+// import { AllExceptionsFilter } from './global/http-exception.filter';
 import { TransformInterceptor } from './global/transform.interceptor';
 import helmet from 'helmet';
 async function bootstrap() {
@@ -17,8 +17,8 @@ async function bootstrap() {
     app.enableShutdownHooks();
   }
 
-  app.use(helmet);
-  app.useGlobalFilters(new AllExceptionsFilter());
+  app.use(helmet());
+  // app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalInterceptors(new TransformInterceptor());
 
   app.useGlobalPipes(

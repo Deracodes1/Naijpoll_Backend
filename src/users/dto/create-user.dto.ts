@@ -20,7 +20,7 @@ export class CreateUserDto {
 
   @IsString()
   @IsOptional()
-  state?: string = 'active';
+  state?: string = 'null';
 
   @IsString()
   @IsOptional()

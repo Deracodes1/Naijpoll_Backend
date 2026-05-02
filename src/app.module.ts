@@ -7,6 +7,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerMiddleware } from './middlewares/logger/logger.middleware';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+
 @Module({
   imports: [
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
@@ -24,13 +26,14 @@ import { UsersModule } from './users/users.module';
         autoLoadEntities: true,
         synchronize: true,
         extra: {
-          max: 20, // Increase the maximum number of clients in the pool
+          max: 20,
           idleTimeoutMillis: 30000,
           connectionTimeoutMillis: 2000,
         },
       }),
     }),
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
