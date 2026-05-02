@@ -6,6 +6,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { LoggerMiddleware } from './middlewares/logger/logger.middleware';
+import { UsersModule } from './users/users.module';
 @Module({
   imports: [
     ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
@@ -29,6 +30,7 @@ import { LoggerMiddleware } from './middlewares/logger/logger.middleware';
         },
       }),
     }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
