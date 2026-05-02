@@ -4,6 +4,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  Index,
 } from 'typeorm';
 
 @Entity()
@@ -14,10 +15,11 @@ export class User {
   @Column()
   name!: string;
 
-  @Column()
+  @Column({ unique: true })
+  @Index()
   email!: string;
 
-  @Column()
+  @Column({ select: false })
   password!: string;
 
   @Column()
@@ -27,8 +29,14 @@ export class User {
   role!: string;
 
   @CreateDateColumn()
-  joinedDate!: string;
+  joinedDate!: Date;
 
   @UpdateDateColumn()
-  updatedAt!: string;
+  updatedAt!: Date;
+
+  // // Helper method to safely return user without sensitive data
+  // toJSON() {
+  //   delete this.password;
+  //   return this;
+  // }
 }
