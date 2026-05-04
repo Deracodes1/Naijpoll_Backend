@@ -67,7 +67,7 @@ export class AuthService {
     );
 
     if (!user) {
-      // Generic error message - don't reveal if email exists or password is wrong
+      // Generic error message - so i don't reveal if email exists or password is wrong
       throw new UnauthorizedException('Invalid credentials');
     }
 
@@ -109,7 +109,7 @@ export class AuthService {
 
     return this.jwtService.signAsync(payload, {
       secret,
-      expiresIn: '15m', // Hardcode or cast from config
+      expiresIn: '15m',
     });
   }
 }

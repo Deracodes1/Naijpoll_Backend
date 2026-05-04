@@ -53,7 +53,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       method: request.method,
       message: exception instanceof Error ? exception.message : 'Unknown error',
       stack: exception instanceof Error ? exception.stack : undefined,
-      // In production, send to Sentry/CloudWatch here
+      // In production, will send to Sentry
     });
 
     const isServerError = status >= 500;
