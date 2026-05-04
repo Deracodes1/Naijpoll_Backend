@@ -4,6 +4,7 @@ import { VersioningType, ConsoleLogger, ValidationPipe } from '@nestjs/common';
 import { AllExceptionsFilter } from './global/http-exception.filter';
 import { TransformInterceptor } from './global/transform.interceptor';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 async function bootstrap() {
   // this will toggle JSON based logging depending on whether the app is running on production or not
   const isProduction = process.env.NODE_ENV === 'production';
@@ -12,7 +13,7 @@ async function bootstrap() {
       ? new ConsoleLogger({ json: true })
       : ['debug', 'error', 'fatal', 'log', 'verbose', 'warn'],
   });
-
+  app.use(cookieParser());
   if (isProduction) {
     app.enableShutdownHooks();
   }

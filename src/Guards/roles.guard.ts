@@ -1,7 +1,7 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
-
+import { AuthUser } from 'src/auth/types/auth-user.type';
 @Injectable()
 export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
@@ -18,7 +18,7 @@ export class RolesGuard implements CanActivate {
       return true; // No roles required, allow access
     }
 
-    const { user } = context.switchToHttp().getRequest();
+    const { user } = context.switchToHttp().getRequest<{ user: AuthUser }>();
     return requiredRoles.includes(user.role);
   }
 }
