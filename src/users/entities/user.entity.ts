@@ -4,9 +4,10 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
   Index,
 } from 'typeorm';
-
+import { Poll } from 'src/poll/entities/poll.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -34,9 +35,6 @@ export class User {
   @UpdateDateColumn()
   updatedAt!: Date;
 
-  // // Helper method to safely return user without sensitive data
-  // toJSON() {
-  //   delete this.password;
-  //   return this;
-  // }
+  @OneToMany(() => Poll, (poll) => poll.createdBy)
+  polls!: Poll[];
 }
