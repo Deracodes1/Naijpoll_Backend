@@ -33,7 +33,7 @@ export class Poll {
   @Column({
     type: 'enum',
     enum: PollStatus,
-    default: PollStatus.DRAFT,
+    default: PollStatus.ACTIVE,
   })
   status!: PollStatus;
 

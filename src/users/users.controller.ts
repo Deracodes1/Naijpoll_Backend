@@ -30,10 +30,7 @@ export class UsersController {
   // Any authenticated user can view their own profile
   @Get(':id')
   @UseGuards(JwtAuthGuard)
-  findOne(
-    @Param('id') id: string,
-    @CurrentUser('userId') currentUserId: string,
-  ) {
+  findOne(@Param('id') id: string, @CurrentUser('id') currentUserId: string) {
     if (id !== currentUserId) throw new ForbiddenException();
     return this.usersService.findOne(id);
   }
