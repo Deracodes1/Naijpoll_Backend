@@ -37,6 +37,10 @@ async function bootstrap() {
     type: VersioningType.URI,
     defaultVersion: '1',
   });
+  app.enableCors({
+    origin: ['http://localhost:3000'],
+    credentials: true, //will enable the permitted frontend apps to send access toekn via authorization headers
+  });
 
   const port = process.env.PORT || 3000;
   await app.listen(port, '0.0.0.0');
