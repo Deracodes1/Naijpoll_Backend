@@ -8,6 +8,7 @@ import {
   Index,
 } from 'typeorm';
 import { Poll } from 'src/poll/entities/poll.entity';
+import { Vote } from 'src/vote/entities/vote.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -28,6 +29,9 @@ export class User {
 
   @Column({ default: 'user' })
   role!: string;
+
+  @OneToMany(() => Vote, (vote) => vote.user)
+  votes!: Vote[];
 
   @CreateDateColumn()
   joinedDate!: Date;

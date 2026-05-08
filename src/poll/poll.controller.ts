@@ -14,7 +14,7 @@ import {
 import { PaginatedPolls, PollsService } from './poll.service';
 import { CreatePollDto } from './dto/create-poll.dto';
 import { UpdatePollDto } from './dto/update-poll.dto';
-import { PollParamsDto } from './entities/poll-params.dto';
+import { PollParamsDto } from './dto/poll-params.dto';
 import { JwtAuthGuard } from 'src/Guards/jwt-auth.guard';
 import { RolesGuard } from 'src/Guards/roles.guard';
 import { Roles } from 'src/Decorators/roles.decorator';

@@ -10,6 +10,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { RedisModule } from './redis/redis.module';
 import { PollsModule } from './poll/poll.module';
+import { VotesModule } from './vote/vote.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { PollsModule } from './poll/poll.module';
     UsersModule,
     AuthModule,
     PollsModule,
+    VotesModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],

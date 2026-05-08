@@ -10,7 +10,7 @@ import { Poll, PollStatus } from './entities/poll.entity';
 import { PollOption } from './entities/poll-option.entity';
 import { CreatePollDto } from './dto/create-poll.dto';
 import { UpdatePollDto } from './dto/update-poll.dto';
-import { PollParamsDto } from './entities/poll-params.dto';
+import { PollParamsDto } from './dto/poll-params.dto';
 
 export interface PaginatedPolls {
   data: Poll[];
@@ -43,7 +43,7 @@ export class PollsService {
       const poll = queryRunner.manager.create(Poll, {
         name: dto.name,
         description: dto.description,
-        status: dto.status || PollStatus.DRAFT,
+        status: dto.status || PollStatus.ACTIVE,
         endsAt: dto.endsAt ? new Date(dto.endsAt) : null,
         createdById: adminId,
       });

@@ -14,7 +14,7 @@ import { JwtAuthGuard } from 'src/Guards/jwt-auth.guard';
 import { RolesGuard } from 'src/Guards/roles.guard';
 import { Roles } from 'src/Decorators/roles.decorator';
 import { CurrentUser } from 'src/Decorators/current-user.decorator';
-
+import type { AuthUser } from 'src/auth/types/auth-user.type';
 @Controller({ path: 'users', version: '1' })
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -33,6 +33,13 @@ export class UsersController {
   findOne(@Param('id') id: string, @CurrentUser('id') currentUserId: string) {
     if (id !== currentUserId) throw new ForbiddenException();
     return this.usersService.findOne(id);
+  }
+
+  // to return the user's profile info like email et al.
+  @Get('me')
+  @UseGuards(JwtAuthGuard)
+  getProfile(@CurrentUser() user: AuthUser) {
+    return this.usersService.findOne(user.id);
   }
 
   @Patch(':id')
