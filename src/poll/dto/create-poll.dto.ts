@@ -21,7 +21,7 @@ export class CreatePollDto {
 
   @IsEnum(PollStatus)
   @IsOptional()
-  status?: PollStatus = PollStatus.DRAFT;
+  status?: PollStatus = PollStatus.ACTIVE;
 
   @IsDateString()
   @IsOptional()

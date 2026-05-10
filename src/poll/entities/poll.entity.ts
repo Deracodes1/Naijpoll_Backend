@@ -13,9 +13,9 @@ import { User } from '../../users/entities/user.entity';
 import { PollOption } from './poll-option.entity';
 import { Vote } from 'src/vote/entities/vote.entity';
 export enum PollStatus {
+  ACTIVE = 'active',
   DRAFT = 'draft',
   PUBLISHED = 'published',
-  ACTIVE = 'active',
   CLOSED = 'closed',
 }
 

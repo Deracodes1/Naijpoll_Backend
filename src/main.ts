@@ -38,7 +38,7 @@ async function bootstrap() {
     defaultVersion: '1',
   });
   app.enableCors({
-    origin: ['http://localhost:3000'],
+    origin: ['http://localhost:4200'],
     credentials: true, //will enable the permitted frontend apps to send access toekn via authorization headers
   });
 

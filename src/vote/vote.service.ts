@@ -92,31 +92,51 @@ export class VotesService {
 
     return this.voteRepository.save(vote);
   }
-
   async getResults(
     pollId: string,
     stateFilter?: string,
   ): Promise<VoteResult[]> {
-    const query = this.voteRepository
-      .createQueryBuilder('vote')
-      .select('vote.optionId', 'optionId')
-      .addSelect('option.optionText', 'optionText')
-      .addSelect('COUNT(*)', 'count')
-      .innerJoin('vote.option', 'option')
-      .where('vote.pollId = :pollId', { pollId })
-      .groupBy('vote.optionId')
-      .addGroupBy('option.optionText');
-
+    // If filtering by state, check if ANY votes exist from that state first
     if (stateFilter) {
-      query.andWhere('vote.state = :state', { state: stateFilter });
+      const stateVoteCount = await this.voteRepository
+        .createQueryBuilder('vote')
+        .where('vote.pollId = :pollId', { pollId })
+        .andWhere('vote.state = :state', { state: stateFilter })
+        .getCount();
+
+      if (stateVoteCount === 0) {
+        return []; // No participation from this state
+      }
     }
 
-    const results = await query.getRawMany<RawVoteResult>();
+    // Get all options for this poll
+    const options = await this.optionRepository.find({
+      where: { pollId },
+      select: ['id', 'optionText'],
+    });
 
-    return results.map((r) => ({
-      optionId: r.optionId,
-      optionText: r.optionText,
-      count: parseInt(r.count, 10),
+    // Get vote counts (filtered by state if provided)
+    const voteQuery = this.voteRepository
+      .createQueryBuilder('vote')
+      .select('vote.optionId', 'optionId')
+      .addSelect('COUNT(vote.id)', 'count')
+      .where('vote.pollId = :pollId', { pollId })
+      .groupBy('vote.optionId');
+
+    if (stateFilter) {
+      voteQuery.andWhere('vote.state = :state', { state: stateFilter });
+    }
+
+    const voteResults = await voteQuery.getRawMany<RawVoteResult>();
+    const voteMap = new Map(
+      voteResults.map((v) => [v.optionId, parseInt(v.count, 10)]),
+    );
+
+    // Merge: all options shown, zero votes = 0
+    return options.map((option) => ({
+      optionId: option.id,
+      optionText: option.optionText,
+      count: voteMap.get(option.id) || 0,
     }));
   }
   async getStateBreakdown(pollId: string): Promise<StateResult[]> {
