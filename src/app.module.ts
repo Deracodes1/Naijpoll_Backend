@@ -21,18 +21,22 @@ import { VotesModule } from './vote/vote.module';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.get<string>('DATABASE_HOST'),
-        port: configService.get<number>('DATABASE_PORT'),
-        username: configService.get<string>('DATABASE_USERNAME'),
-        password: configService.get<string>('DATABASE_PASSWORD'),
-        database: configService.get<string>('DATABASE_DATABASE'),
-        autoLoadEntities: true,
-        synchronize: true,
+        url: configService.get<string>('DATABASE_URL'),
+        ssl: {
+          // This tells the driver to ignore certificate validation errors
+          // while still encrypting the connection—perfect for cloud DBs.
+          rejectUnauthorized: false,
+        },
         extra: {
+          // This explicitly tells the driver how to handle the connection
+          // and silences that specific warning.
+          sslmode: 'verify-full',
           max: 20,
           idleTimeoutMillis: 30000,
           connectionTimeoutMillis: 2000,
         },
+        autoLoadEntities: true,
+        synchronize: false,
       }),
     }),
     RedisModule,
