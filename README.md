@@ -10,7 +10,7 @@ Security: Helmet, Throttler (rate limiting)
 Prerequisites
 Node.js v20+
 PostgreSQL
-Redis (local or Upstash)
+Redis (Upstash)
 Environment Variables
 Create a .env file:
 env
