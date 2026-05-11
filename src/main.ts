@@ -32,6 +32,7 @@ async function bootstrap() {
       },
     }),
   );
+  console.log('DB URL:', process.env.DATABASE_URL ? 'SET' : 'MISSING');
   app.setGlobalPrefix('api');
   app.enableVersioning({
     type: VersioningType.URI,

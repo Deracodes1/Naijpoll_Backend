@@ -45,6 +45,7 @@ import { VotesModule } from './vote/vote.module';
     PollsModule,
     VotesModule,
   ],
+
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
