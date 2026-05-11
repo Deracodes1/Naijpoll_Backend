@@ -39,7 +39,7 @@ async function bootstrap() {
     defaultVersion: '1',
   });
   app.enableCors({
-    origin: ['http://localhost:4200'],
+    origin: ['https://naijpoll.netlify.app'],
     credentials: true, //will enable the permitted frontend apps to send access toekn via authorization headers
   });
 
