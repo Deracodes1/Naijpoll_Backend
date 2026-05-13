@@ -1,7 +1,8 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerBehindProxyGuard } from './Guards/throttler-behind-proxy.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -47,7 +48,10 @@ import { VotesModule } from './vote/vote.module';
   ],
 
   controllers: [AppController],
-  providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
+  providers: [
+    AppService,
+    { provide: APP_GUARD, useClass: ThrottlerBehindProxyGuard },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
